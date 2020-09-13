@@ -11,7 +11,7 @@ class SlackMessage:
 
     message: str
     channel: str
-    ts: str
+    thread_ts: str = None
 
 
 @dataclass
