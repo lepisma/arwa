@@ -252,6 +252,17 @@ python-versions = "*"
 version = "1.0.1"
 
 [[package]]
+category = "main"
+description = "Library with helpers for the jsonlines file format"
+name = "jsonlines"
+optional = false
+python-versions = "*"
+version = "1.2.0"
+
+[package.dependencies]
+six = "*"
+
+[[package]]
 category = "dev"
 description = "More routines for operating on iterables, beyond itertools"
 name = "more-itertools"
@@ -523,7 +534,8 @@ idna = ">=2.0"
 multidict = ">=4.0"
 
 [metadata]
-content-hash = "de25b0fd7c2e71948d975c985afdf5577dd8516239590da5a37bc4e90b951bd6"
+content-hash = "3bfb9120213fed09542b5c0b8f48d3f7934ecd09bcd2381123488a568dd622ca"
+lock-version = "1.0"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -619,6 +631,10 @@ idna = [
 iniconfig = [
     {file = "iniconfig-1.0.1-py3-none-any.whl", hash = "sha256:80cf40c597eb564e86346103f609d74efce0f6b4d4f30ec8ce9e2c26411ba437"},
     {file = "iniconfig-1.0.1.tar.gz", hash = "sha256:e5f92f89355a67de0595932a6c6c02ab4afddc6fcdc0bfc5becd0d60884d3f69"},
+]
+jsonlines = [
+    {file = "jsonlines-1.2.0-py2.py3-none-any.whl", hash = "sha256:0ebd5b0c3efe0d4b5018b320fb0ee1a7b680ab39f6eb853715859f818d386cc8"},
+    {file = "jsonlines-1.2.0.tar.gz", hash = "sha256:43b8d5588a9d4862c8a4a49580e38e20ec595aee7ad6fe469b10fb83fbefde88"},
 ]
 more-itertools = [
     {file = "more-itertools-8.5.0.tar.gz", hash = "sha256:6f83822ae94818eae2612063a5101a7311e68ae8002005b5e05f03fd74a86a20"},

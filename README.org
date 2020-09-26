@@ -1,3 +1,8 @@
 #+TITLE: arwa
 
 Abhinav's Remote Work Automata.
+
+** Setup
+Environment variables:
++ =SLACK_CLASSIC_BOT_USER_TOKEN= with classic app permissions for RTM API.
++ =SLACK_BOT_USER_TOKEN= for regular bot user use cases.

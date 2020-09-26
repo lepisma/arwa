@@ -42,7 +42,7 @@ if __name__ == "__main__":
     sentinel = Sentinel(db)
     sentinel.on_message = slack.RTMClient.run_on(event="message")(sentinel.on_message)
 
-    slack_token = os.environ["SLACK_BOT_USER_TOKEN"]
+    slack_token = os.environ["SLACK_CLASSIC_BOT_USER_TOKEN"]
     rtm_client = slack.RTMClient(token=slack_token)
 
     retry_time = 5
