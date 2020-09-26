@@ -16,4 +16,4 @@ import slack
 if __name__ == "__main__":
     args = docopt(__doc__)
 
-    client = slack.WebClient(os.environ["SLACK_BOT_USER_TOKEN"])
+    client = slack.WebClient(os.environ["SLACK_USER_TOKEN"])
