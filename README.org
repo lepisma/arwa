@@ -22,5 +22,5 @@ arwa slack export conversations --conversation-id=<conversation-id> --output-jso
 arwa slack export users --output-json=output-json
 #+end_src
 
-These scripts will require various scopes that can be figured out once the API
+These commands require various scopes that can be figured out once the API
 throws error. Though I should document them under each command's help.
