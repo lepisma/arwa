@@ -1,5 +1,7 @@
 from typing import List
 
+from pydash import py_
+
 import slack
 from arwa.types import SlackUser
 
@@ -26,13 +28,14 @@ def list_users(client: slack.WebClient) -> List[SlackUser]:
 
 def channel_name_to_id(name: str, client: slack.WebClient) -> str:
     """
-    Return slack id for given channel name.
+    Return slack id for given channel name. This only works for the channel the
+    slack client is part of.
     """
 
     response = client.users_conversations(types="public_channel,private_channel,mpim,im", exclude_archived=True)
     channels = response["channels"]
 
-    result = py_.find(channels, lambda ch: ch["name"] == name)
+    result = py_.find(channels, lambda ch: ch.get("name", "") == name)
 
     if result:
         return result["id"]

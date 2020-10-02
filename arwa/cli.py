@@ -24,7 +24,7 @@ def main():
 
             print(f"Inviting {len(users)} to {args['<channel-name>']}")
 
-            client.conversations_invite(channel_id, [u.id for u in users])
+            client.conversations_invite(channel=channel_id, users=[u.id for u in users])
         else:
             raise NotImplementedError()
     else:
