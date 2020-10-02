@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict, Iterator, List
 
 from pydash import py_
 
@@ -41,3 +41,22 @@ def channel_name_to_id(name: str, client: slack.WebClient) -> str:
         return result["id"]
     else:
         raise ValueError(f"Channel {name} not found")
+
+
+def get_message_batches(conversation_id: str, client: slack.WebClient) -> Iterator[List[Dict]]:
+    """
+    Get messages in batches of requests.
+    """
+
+    response = client.conversations_history(channel=conversation_id)
+    message_batch = response["messages"]
+
+    if not message_batch:
+        return
+
+    yield message_batch
+
+    while response["has_more"]:
+        next_cursor = response["response_metadata"]["next_cursor"]
+        response = client.conversations_history(channel=conversation_id, cursor=next_cursor)
+        yield response["messages"]
