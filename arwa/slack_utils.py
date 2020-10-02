@@ -1,3 +1,5 @@
+from typing import List
+
 import slack
 from arwa.types import SlackUser
 
