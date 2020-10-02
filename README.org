@@ -1,5 +1,7 @@
 #+TITLE: arwa
 
+[[https://img.shields.io/github/v/tag/lepisma/arwa.svg?style=flat-square]]
+
 Abhinav's Remote Work Automata.
 
 ** Setup
@@ -7,3 +9,18 @@ Environment variables:
 + =SLACK_CLASSIC_BOT_USER_TOKEN= with classic app permissions for RTM API.
 + =SLACK_BOT_USER_TOKEN= for bot user use cases.
 + =SLACK_USER_TOKEN= for regular use cases.
+
+** Usage
+#+begin_src shell
+# For inviting everyone in a channel
+arwa slack bulk-invite <channel-name>
+
+# For exporting all messages from a conversation in a jsonlines file
+arwa slack export conversations --conversation-id=<conversation-id> --output-jsonl=<output-jsonl>
+
+# For dumping workspace user information
+arwa slack export users --output-json=output-json
+#+end_src
+
+These scripts will require various scopes that can be figured out once the API
+throws error. Though I should document them under each command's help.
