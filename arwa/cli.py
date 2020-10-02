@@ -10,11 +10,12 @@ import os
 from docopt import docopt
 
 import slack
+from arwa import __version__
 from arwa.slack_utils import channel_name_to_id, list_users
 
 
 def main():
-    args = docopt(__doc__)
+    args = docopt(__doc__, version=__version__)
 
     if args["slack"]:
         if args["bulk-invite"]:
