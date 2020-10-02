@@ -3,6 +3,12 @@ from dataclasses import dataclass
 
 
 @dataclass
+class SlackUser:
+    id: str
+    name: str
+
+
+@dataclass
 class SlackMessage:
     """
     Type representing a slack message. This has sufficient information to
