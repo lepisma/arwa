@@ -3,13 +3,11 @@ arwa
 
 Usage:
   arwa slack bulk-invite <channel-name>
-  arwa slack export <conversation-id> --output-jsonl=<output-jsonl>
-
-Arguments:
-  <conversation-id>       Conversation id. This can be channel id, dm id or anything
-                          that behaves like a conversation in slack terminology.
+  arwa slack export conversations --conversation-id=<conversation-id> --output-jsonl=<output-jsonl>
+  arwa slack export users --output-json=output-json
 """
 
+import json
 import os
 
 import jsonlines
@@ -34,14 +32,21 @@ def main():
             print(f"Inviting {len(users)} to {args['<channel-name>']}")
 
             client.conversations_invite(channel=channel_id, users=[u.id for u in users])
+
         elif args["export"]:
             client = slack.WebClient(os.environ["SLACK_USER_TOKEN"])
 
-            with jsonlines.open(args["--output-jsonl"], mode="w") as fp:
-                bar = tqdm()
-                for batch in get_message_batches(args["<conversation-id>"], client):
-                    fp.write_all(batch)
-                    bar.update(len(batch))
+            if args["conversations"]:
+                conversation_id = args["--conversation-id"]
+                with jsonlines.open(args["--output-jsonl"], mode="w") as fp:
+                    bar = tqdm()
+                    for batch in get_message_batches(conversation_id, client):
+                        fp.write_all(batch)
+                        bar.update(len(batch))
+
+            elif args["users"]:
+                with open(args["--output-json"], "w") as fp:
+                    json.dump(client.users_list()["members"], fp)
         else:
             raise NotImplementedError()
     else:
