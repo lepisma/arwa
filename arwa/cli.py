@@ -67,8 +67,7 @@ def main():
 
     if args["calendar"]:
         email_id = args["<email-id>"]
-        n_prev = 5
-        n_next = 3
+        n_prev = n_next = 5
 
         anchor_dt = get_last_sunday()
         delta = datetime.timedelta(days=7)
