@@ -12,6 +12,22 @@ from pydash import py_
 from arwa.types import CalendarEvent
 
 
+def get_last_sunday(dt=None) -> datetime.datetime:
+    """
+    Get last sunday for given datetime. If the current dt is Sunday, then
+    return that.
+    """
+
+    dt = dt or datetime.datetime.now()
+    day = dt.isoweekday()
+
+    def _date_to_dt(d: datetime.date):
+        return datetime.datetime.combine(d, datetime.datetime.min.time())
+
+    delta = datetime.timedelta(days=day % 7)
+    return _date_to_dt(dt - delta)
+
+
 def parse_icalendar_event(ev) -> CalendarEvent:
     return CalendarEvent(
         name=str(ev["SUMMARY"]),
@@ -22,7 +38,7 @@ def parse_icalendar_event(ev) -> CalendarEvent:
 
 def parse_google_calendar(email_id: str, start_time: datetime.datetime, end_time: datetime.datetime) -> List[CalendarEvent]:
     """
-    Parse google calendar and return events.
+    Parse google calendar and return events. End time is not inclusive.
     """
 
     cal = GoogleCalendar(email_id)
