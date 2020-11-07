@@ -23,10 +23,14 @@ class SlackMessage:
 @dataclass
 class CalendarEvent:
     """
-    A Google calendar event.
+    A time blocked calendar event.
     """
 
-    pass
+    name: str
+    organizer: str
+    start_time: datetime.datetime
+    end_time: datetime.datetime
+    attending: bool = None
 
 
 @dataclass
