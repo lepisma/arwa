@@ -5,16 +5,18 @@ Usage:
   arwa slack bulk-invite <channel-name>
   arwa slack export conversations --conversation-id=<conversation-id> --output-jsonl=<output-jsonl>
   arwa slack export users --output-json=output-json
+  arwa slack export usergroup-emails <user-group-name>
+  arwa slack post image <image-path> --channel-name=<channel-name> [--text=<text>]
 """
 
 import json
 import os
 
 import jsonlines
+import slack
 from docopt import docopt
 from tqdm import tqdm
 
-import slack
 from arwa import __version__
 from arwa.slack_utils import (channel_name_to_id, get_message_batches,
                               list_users)
@@ -47,7 +49,13 @@ def main():
             elif args["users"]:
                 with open(args["--output-json"], "w") as fp:
                     json.dump(client.users_list()["members"], fp)
-        else:
-            raise NotImplementedError()
-    else:
-        raise NotImplementedError()
+
+        elif args["post"]:
+            client = slack.WebClient(os.environ["SLACK_BOT_USER_TOKEN"])
+
+            if args["image"]:
+                client.files_upload(
+                    channels=args["--channel-name"],
+                    file=args["<image-path>"],
+                    initial_comment=(args["--text"] or "")
+                )
