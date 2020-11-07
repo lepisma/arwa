@@ -27,10 +27,9 @@ class CalendarEvent:
     """
 
     name: str
-    organizer: str
     start_time: datetime.datetime
     end_time: datetime.datetime
-    attending: bool = None
+    response_status: str = None
 
 
 @dataclass
