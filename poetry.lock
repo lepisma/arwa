@@ -261,6 +261,14 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "ip2location"
+version = "8.5.1"
+description = "Python API for IP2Location database."
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "jsonlines"
 version = "1.2.0"
 description = "Library with helpers for the jsonlines file format"
@@ -564,7 +572,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "42e08774389f94a58dfce0522db086c0099a64d3c3be30c5067f6b14c8578877"
+content-hash = "765fd62dfc640fa876cd01d05285496c42609340f063446b35e20df851d19e4b"
 
 [metadata.files]
 aiohttp = [
@@ -684,6 +692,10 @@ idna = [
 iniconfig = [
     {file = "iniconfig-1.1.1-py2.py3-none-any.whl", hash = "sha256:011e24c64b7f47f6ebd835bb12a743f2fbe9a26d4cecaa7f53bc4f35ee9da8b3"},
     {file = "iniconfig-1.1.1.tar.gz", hash = "sha256:bc3af051d7d14b2ee5ef9969666def0cd1a000e121eaea580d4a313df4b37f32"},
+]
+ip2location = [
+    {file = "IP2Location-8.5.1-py3-none-any.whl", hash = "sha256:962764087448b4f4b3dc921c5ef2a97b7392801a2598dca83f2694859f5de12e"},
+    {file = "IP2Location-8.5.1.tar.gz", hash = "sha256:36185956c6812614b2601f243ae6a2ab8fb92fe770eddcc434843a13c6ec3912"},
 ]
 jsonlines = [
     {file = "jsonlines-1.2.0-py2.py3-none-any.whl", hash = "sha256:0ebd5b0c3efe0d4b5018b320fb0ee1a7b680ab39f6eb853715859f818d386cc8"},
