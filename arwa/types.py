@@ -2,7 +2,7 @@ import datetime
 from dataclasses import dataclass
 
 
-@dataclass
+@dataclass(eq=True, frozen=True)
 class SlackUser:
     id: str
     name: str
