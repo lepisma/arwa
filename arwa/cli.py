@@ -7,6 +7,7 @@ Usage:
   arwa slack export users --output-json=output-json
   arwa slack export usergroup-emails <user-group-name>
   arwa slack post image <image-path> --channel-name=<channel-name> [--text=<text>]
+  arwa slack post --text-file=<text-file> --channel-name=<channel-name>
   arwa calendar hours <email-id>
 """
 
@@ -64,6 +65,13 @@ def main():
                     file=args["<image-path>"],
                     initial_comment=(args["--text"] or "")
                 )
+
+            if args["--text-file"]:
+                with open(args["--text-file"]) as fp:
+                    text = fp.read()
+
+                channel_id = channel_name_to_id(args["--channel-name"], client)
+                client.chat_postMessage(channel=channel_id, text=text)
 
     if args["calendar"]:
         email_id = args["<email-id>"]
