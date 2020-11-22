@@ -71,7 +71,17 @@ def main():
                     text = fp.read()
 
                 channel_id = channel_name_to_id(args["--channel-name"], client)
-                client.chat_postMessage(channel=channel_id, text=text)
+                client.chat_postMessage(
+                    channel=channel_id,
+                    text="",
+                    blocks=[{
+                        "type": "section",
+                        "text": {
+                            "type": "mrkdwn",
+                            "text": text
+                        }
+                    }]
+                )
 
     if args["calendar"]:
         email_id = args["<email-id>"]
