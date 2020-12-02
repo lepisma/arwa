@@ -1,0 +1,10 @@
+# Configuration sample for slack bulk post
+
+# Each item is a message sent to a group of people. This contains variables for
+# template and user ids specifying the groups. Variables field is optional if
+# template doesn't need it.
+
+- user-ids: ["a", "b", "c"]
+  variables: {}
+- user-ids: ["a"]
+  variables: {}
