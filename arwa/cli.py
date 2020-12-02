@@ -8,15 +8,21 @@ Usage:
   arwa slack export usergroup-emails <user-group-name>
   arwa slack post image <image-path> --channel-name=<channel-name> [--text=<text>]
   arwa slack post --text-file=<text-file> --channel-name=<channel-name>
+  arwa slack post bulk --template-file=<template-file> --bulk-post-config=<bulk-post-config>
   arwa calendar hours <email-id>
+
+Options:
+  --bulk-post-config=<bulk-post-config>       Yaml config for bulk text.
 """
 
 import datetime
 import json
 import os
 
+import jinja2
 import jsonlines
 import slack
+import yaml
 from docopt import docopt
 from tabulate import tabulate
 from tqdm import tqdm
@@ -82,6 +88,18 @@ def main():
                         }
                     }]
                 )
+
+            if args["bulk"]:
+                with open(args["--template-file"]) as fp:
+                    template = jinja2.Template(fp.read())
+
+                with open(args["--bulk-post-config"]) as fp:
+                    bulk_items = yaml.safe_load(fp)
+
+                for item in tqdm(bulk_items):
+                    variables = item.get("variables", {})
+                    response = client.conversations_open(users=item["user-ids"])
+                    client.chat_postMessage(channel=response["channel"]["id"], text=template.render(**variables))
 
     if args["calendar"]:
         email_id = args["<email-id>"]
