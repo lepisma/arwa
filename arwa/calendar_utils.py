@@ -92,7 +92,7 @@ def calculate_time_spent(events: List[CalendarEvent]) -> float:
     events in consideration.
     """
 
-    total = 0
+    total: float = 0
 
     for ev in events:
         if ev.response_status and ev.response_status == "accepted":
