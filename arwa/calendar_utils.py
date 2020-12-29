@@ -54,10 +54,13 @@ def parse_google_calendar(email_id: str, start_time: datetime.datetime, end_time
             response_status = "accepted"
         else:
             attendee = py_.find(ev.attendees, lambda at: at.email == email_id)
-            if attendee.response_status == "needsAction":
+            try:
+                if attendee.response_status == "needsAction":
+                    response_status = None
+                else:
+                    response_status = attendee.response_status
+            except AttributeError:
                 response_status = None
-            else:
-                response_status = attendee.response_status
 
         events.append(CalendarEvent(
             name=name,
