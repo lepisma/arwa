@@ -1,6 +1,6 @@
 import datetime
 from dataclasses import dataclass
-from typing import Optional
+from typing import List, Optional
 
 
 @dataclass(eq=True, frozen=True)
@@ -33,6 +33,7 @@ class CalendarEvent:
     name: str
     start_time: datetime.datetime
     end_time: datetime.datetime
+    attendees: List[str]
     response_status: Optional[str] = None
 
 

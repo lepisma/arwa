@@ -3,7 +3,7 @@ Utilities for interacting with online calendars.
 """
 
 import datetime
-from typing import List
+from typing import List, Optional
 
 from gcsa.google_calendar import GoogleCalendar
 from pydash import py_
@@ -42,7 +42,8 @@ def parse_google_calendar(email_id: str, start_time: datetime.datetime, end_time
 
         if not ev.attendees:
             # This is likely a personal event
-            response_status = "accepted"
+            response_status: Optional[str] = "accepted"
+            attendees = [email_id]
         else:
             attendee = py_.find(ev.attendees, lambda at: at.email == email_id)
             try:
@@ -52,11 +53,13 @@ def parse_google_calendar(email_id: str, start_time: datetime.datetime, end_time
                     response_status = attendee.response_status
             except AttributeError:
                 response_status = None
+            attendees = [a.email for a in ev.attendees]
 
         events.append(CalendarEvent(
             name=name,
             start_time=start_time,
             end_time=end_time,
+            attendees=attendees,
             response_status=response_status
         ))
 
