@@ -5,8 +5,6 @@ Usage:
   arwa slack bulk-invite <channel-name>
   arwa slack export conversations --conversation-id=<conversation-id> --output-jsonl=<output-jsonl>
   arwa slack export users --output-json=output-json
-  arwa slack export usergroup-emails <user-group-name>
-  arwa slack post image <image-path> --channel-name=<channel-name> [--text=<text>]
   arwa slack post --text-file=<text-file> --channel-name=<channel-name>
   arwa slack post bulk --template-file=<template-file> --bulk-post-config=<bulk-post-config>
   arwa calendar hours <email-id>
@@ -66,13 +64,6 @@ def main():
 
         elif args["post"]:
             client = slack.WebClient(os.environ["SLACK_BOT_USER_TOKEN"])
-
-            if args["image"]:
-                client.files_upload(
-                    channels=args["--channel-name"],
-                    file=args["<image-path>"],
-                    initial_comment=(args["--text"] or "")
-                )
 
             if args["--text-file"]:
                 with open(args["--text-file"]) as fp:
