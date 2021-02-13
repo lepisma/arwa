@@ -1,11 +1,13 @@
 import datetime
 from dataclasses import dataclass
+from typing import Optional
 
 
 @dataclass(eq=True, frozen=True)
 class SlackUser:
     id: str
     name: str
+    email: Optional[str] = None
 
 
 @dataclass
@@ -17,7 +19,7 @@ class SlackMessage:
 
     message: str
     channel: str
-    thread_ts: str = None
+    thread_ts: Optional[str] = None
 
 
 @dataclass
@@ -29,7 +31,7 @@ class CalendarEvent:
     name: str
     start_time: datetime.datetime
     end_time: datetime.datetime
-    response_status: str = None
+    response_status: Optional[str] = None
 
 
 @dataclass
@@ -41,4 +43,4 @@ class SlackMessageAction:
     scheduled: datetime.datetime
     message: str
     channel: str
-    thread_ts: str = None
+    thread_ts: Optional[str] = None
