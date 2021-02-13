@@ -30,9 +30,12 @@ def last_user_access(client: slack.WebClient, n_pages=10) -> Dict[SlackUser, Dic
     return access
 
 
-def list_users(client: slack.WebClient) -> List[SlackUser]:
+def list_users(client: slack.WebClient, all_users=False) -> List[SlackUser]:
     """
-    List workspace users except bots and deactivated accounts.
+    List workspace users. If `all_users` is True, return bots and deactivated
+    users also.
+
+    Notice that reading email needs `users:read.email` slack scope.
     """
 
     response = client.users_list()
@@ -40,14 +43,20 @@ def list_users(client: slack.WebClient) -> List[SlackUser]:
 
     users = []
     for member in members:
-        if member["is_bot"]:
-            continue
-        if member["deleted"]:
-            continue
-        if member["id"] == "USLACKBOT":
-            continue
-        users.append(SlackUser(member["id"], member["real_name"]))
-    return users
+        users.append(SlackUser(
+            member["id"], member["profile"]["real_name"],
+            is_bot=member["is_bot"],
+            is_deleted=member["deleted"],
+            email=member["profile"].get("email")
+        ))
+
+    if all_users:
+        return users
+    else:
+        return [
+            u for u in users
+            if not (u.is_bot or u.is_deleted or u.id == "USLACKBOT")
+        ]
 
 
 def channel_name_to_id(name: str, client: slack.WebClient) -> str:

@@ -7,6 +7,8 @@ from typing import Optional
 class SlackUser:
     id: str
     name: str
+    is_bot: bool
+    is_deleted: bool
     email: Optional[str] = None
 
 

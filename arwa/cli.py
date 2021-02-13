@@ -15,6 +15,7 @@ Options:
   --bulk-post-config=<bulk-post-config>       Yaml config for bulk text.
 """
 
+import dataclasses
 import datetime
 import json
 import os
@@ -60,7 +61,8 @@ def main():
 
             elif args["users"]:
                 with open(args["--output-json"], "w") as fp:
-                    json.dump(client.users_list()["members"], fp)
+                    users = list_users(client)
+                    json.dump([dataclasses.asdict(u) for u in users], fp)
 
         elif args["post"]:
             client = slack.WebClient(os.environ["SLACK_BOT_USER_TOKEN"])
