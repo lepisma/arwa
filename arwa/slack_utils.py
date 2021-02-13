@@ -59,6 +59,32 @@ def list_users(client: slack.WebClient, all_users=False) -> List[SlackUser]:
         ]
 
 
+def list_usergroups(client: slack.WebClient) -> List[str]:
+    """
+    Return usergroups represented via handles.
+    """
+
+    usergroups = client.usergroups_list()["usergroups"]
+    return [u["handle"] for u in usergroups]
+
+
+def list_users_from_usergroup(client: slack.WebClient, usergroup: str) -> List[SlackUser]:
+    """
+    List users in a given usergroup handle.
+    """
+
+    usergroups = client.usergroups_list(include_users=True)["usergroups"]
+    group = py_.find(usergroups, lambda it: it["handle"] == usergroup)
+    user_ids = group["users"]
+
+    users = []
+    for i in user_ids:
+        u = client.users_info(user=i)["user"]
+        users.append(SlackUser(u["id"], u["profile"]["real_name"], email=u["profile"].get("email")))
+
+    return users
+
+
 def channel_name_to_id(name: str, client: slack.WebClient) -> str:
     """
     Return slack id for given channel name. This only works for the channel the
