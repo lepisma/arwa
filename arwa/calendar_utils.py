@@ -3,8 +3,11 @@ Utilities for interacting with online calendars.
 """
 
 import datetime
+import operator as op
+from functools import reduce
 from typing import List, Optional
 
+import portion as P
 from gcsa.google_calendar import GoogleCalendar
 from pydash import py_
 
@@ -79,3 +82,39 @@ def calculate_time_spent(events: List[CalendarEvent]) -> float:
             total += ((ev.end_time - ev.start_time).total_seconds() / 60)
 
     return total
+
+
+def find_interstices(events: List[CalendarEvent]) -> List[CalendarEvent]:
+    """
+    Return gaps where there are no events.
+    """
+
+    # TODO: Assert for events in the same date.
+
+    date = events[0].start_time.date()
+
+    def _time_to_mins(t: datetime.time) -> int:
+        # TODO: Handle border case
+        return t.hour * 60 + t.minute
+
+    def _mins_to_time(mins: int) -> datetime.time:
+        return datetime.time(mins // 60, mins % 60)
+
+    intervals = []
+    for ev in events:
+        start_time = ev.start_time.time()
+        end_time = ev.end_time.time()
+        intervals.append(P.closed(_time_to_mins(start_time), _time_to_mins(end_time)))
+
+    gaps = reduce(op.or_, intervals).complement()
+    gaps = [g for g in gaps if (g.lower > -P.inf) and (g.upper < P.inf)]
+
+    return [
+        CalendarEvent(
+            str(i),
+            start_time=datetime.datetime.combine(date, _mins_to_time(interval.lower)),
+            end_time=datetime.datetime.combine(date, _mins_to_time(interval.upper)),
+            attendees=[]
+        )
+        for i, interval in enumerate(gaps)
+    ]
