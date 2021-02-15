@@ -20,6 +20,7 @@ pandas = "^1.1.4"
 PyYAML = "^5.3.1"
 plotly = "^4.13.0"
 Jinja2 = "^2.11.2"
+portion = "^2.1.4"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.0.1"
