@@ -102,6 +102,22 @@ def channel_name_to_id(name: str, client: slack.WebClient) -> str:
         raise ValueError(f"Channel {name} not found")
 
 
+def get_public_channels(client: slack.WebClient) -> Iterator[Dict]:
+    """
+    Get list of public channels.
+    """
+
+    response = client.users_conversations(exclude_archived=True, types="public_channel")
+    for channel in response["channels"]:
+        yield channel
+
+    while response["has_more"]:
+        next_cursor = response["response_metadata"]["next_cursor"]
+        response = client.users_conversations(exclude_archived=True, types="public_channel", cursor=next_cursor)
+        for channel in response["channels"]:
+            yield channel
+
+
 def get_message_batches(conversation_id: str, client: slack.WebClient) -> Iterator[List[Dict]]:
     """
     Get messages in batches of requests.
