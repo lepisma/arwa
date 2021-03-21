@@ -2,6 +2,7 @@
 Utilities for interacting with online calendars.
 """
 
+import calendar
 import datetime
 import operator as op
 from functools import reduce
@@ -28,6 +29,17 @@ def get_last_sunday(dt=None) -> datetime.datetime:
 
     delta = datetime.timedelta(days=day % 7)
     return _date_to_dt(dt - delta)
+
+
+def get_last_day_of_month(dt=None) -> datetime.datetime:
+    """
+    Return last day of month for given datetime `dt`.
+    """
+
+    dt = dt or datetime.datetime.now()
+    day = calendar.monthrange(dt.year, dt.month)[1]
+
+    return dt.replace(day=day)
 
 
 def parse_google_calendar(email_id: str, start_time: datetime.datetime, end_time: datetime.datetime) -> List[CalendarEvent]:
