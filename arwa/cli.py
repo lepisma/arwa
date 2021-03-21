@@ -14,7 +14,6 @@ Options:
   --bulk-post-config=<bulk-post-config>       Yaml config for bulk text.
 """
 
-import calendar
 import dataclasses
 import datetime
 import json
