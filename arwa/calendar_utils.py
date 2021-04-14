@@ -96,6 +96,17 @@ def calculate_time_spent(events: List[CalendarEvent]) -> float:
     return total
 
 
+def is_overlapping(event_a: CalendarEvent, event_b: CalendarEvent) -> bool:
+    """
+    Tell if two events (with datetime) are overlapping.
+    """
+
+    interval_a = P.closedopen(event_a.start_time, event_a.end_time)
+    interval_b = P.closedopen(event_b.start_time, event_b.end_time)
+
+    return not (interval_a & interval_b).empty
+
+
 def find_interstices(events: List[CalendarEvent]) -> List[CalendarEvent]:
     """
     Return gaps where there are no events.
