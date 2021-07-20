@@ -47,7 +47,11 @@ def main():
 
             print(f"Inviting {len(users)} to {args['<channel-name>']}")
 
-            client.conversations_invite(channel=channel_id, users=[u.id for u in users])
+            for u in tqdm(users):
+                try:
+                    client.conversations_invite(channel=channel_id, users=[u.id])
+                except Exception as e:
+                    print(e)
 
         elif args["export"]:
             client = slack.WebClient(os.environ["SLACK_USER_TOKEN"])
