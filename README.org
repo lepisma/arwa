@@ -23,6 +23,9 @@ Google Calendar needs credential setup as described [[https://google-calendar-si
   
   # For dumping workspace user information
   arwa slack export users --output-json=output-json
+  
+  # For posting a text message to a channel (by name)
+  arwa slack post --text-file=<text-file> --channel-name=<channel-name>
 #+end_src
 
 These commands require various scopes that can be figured out once the API
