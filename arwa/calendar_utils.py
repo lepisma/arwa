@@ -81,6 +81,18 @@ def parse_google_calendar(email_id: str, start_time: datetime.datetime, end_time
     return events
 
 
+def is_event_personal(ev: CalendarEvent) -> bool:
+    return len(ev.attendees) == 1
+
+
+def is_event_external(ev: CalendarEvent) -> bool:
+    return len({email.split("@")[1] for email in ev.attendees}) > 1
+
+
+def is_event_one_on_one(ev: CalendarEvent) -> bool:
+    return len(ev.attendees) == 2
+
+
 def calculate_time_spent(events: List[CalendarEvent]) -> float:
     """
     Return total time spent (minutes) in given events taking only accepted
