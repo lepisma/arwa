@@ -28,7 +28,7 @@ throws error. Though I should document them under each command's help.
 
 *** Calendar
 #+begin_src shell :exports both :results output
-  # To show break down of calendar hours
+  # To show breakdown of calendar hours
   poetry run arwa calendar report abhinav@vernacular.ai
 #+end_src
 
