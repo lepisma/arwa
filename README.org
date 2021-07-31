@@ -10,6 +10,8 @@ Environment variables:
 + =SLACK_BOT_USER_TOKEN= for bot user use cases.
 + =SLACK_USER_TOKEN= for regular use cases.
 
+Google Calendar needs credential setup as described [[https://google-calendar-simple-api.readthedocs.io/en/latest/getting_started.html#credentials][here]].
+
 ** Usage
 *** Slack
 #+begin_src shell
