@@ -7,11 +7,13 @@ Usage:
   arwa slack export users --output-json=output-json
   arwa slack post --text-file=<text-file> --channel-name=<channel-name>
   arwa slack post bulk --template-file=<template-file> --bulk-post-config=<bulk-post-config>
-  arwa calendar hours <email-id>
-  arwa calendar export --users-json=<users-json> --output-pickle=<output-pickle>
+  arwa calendar report <email-id> [--n-next=<n-next] [--n-prev=<n-prev>]
+  arwa calendar export --users-json=<users-json> --output-pickle=<output-pickle> [--n-next=<n-next] [--n-prev=<n-prev>]
 
 Options:
   --bulk-post-config=<bulk-post-config>       Yaml config for bulk text.
+  --n-next=<n-next>                           Number of future weeks to look in [default: 2].
+  --n-prev=<n-prev>                           Number of past weeks to look in [default: 2].
 """
 
 import dataclasses
@@ -25,12 +27,13 @@ import jsonlines
 import slack
 import yaml
 from docopt import docopt
+from pydash import py_
 from tabulate import tabulate
 from tqdm import tqdm
 
 from arwa import __version__
-from arwa.calendar_utils import (calculate_time_spent, get_last_day_of_month,
-                                 get_last_sunday, parse_google_calendar)
+from arwa.calendar_utils import (get_last_day_of_month, get_last_sunday,
+                                 parse_google_calendar, report_events_summary)
 from arwa.slack_utils import (channel_name_to_id, get_message_batches,
                               list_users)
 from arwa.types import SlackUser
@@ -102,25 +105,32 @@ def main():
                     client.chat_postMessage(channel=response["channel"]["id"], text=template.render(**variables))
 
     if args["calendar"]:
-        if args["hours"]:
+        if args["report"]:
             email_id = args["<email-id>"]
-            n_prev = n_next = 5
+            n_prev = int(args["--n-prev"])
+            n_next = int(args["--n-next"])
 
             anchor_dt = get_last_sunday()
             delta = datetime.timedelta(days=7)
 
             start_dts = [anchor_dt - (delta * i) for i in range(n_prev, -(n_next + 1), -1)]
 
+            headers = ["Start", "End", "Total Hours", "Personal Block", "External", "1:1", "Rest"]
+
             table = []
             for start_time in start_dts:
                 end_time = start_time + delta
                 evs = parse_google_calendar(email_id, start_time, end_time)
-                hours = calculate_time_spent(evs) / 60
-                table.append((start_time.date(), end_time.date(), hours))
+                summary = report_events_summary(evs)
+
+                table.append((
+                    start_time.date(), end_time.date(),
+                    summary["total"], summary["personal"], summary["external"], summary["1:1"], summary["rest"]
+                ))
 
             print(tabulate(
                 table,
-                headers=["Start", "End", "Number of hours"],
+                headers=headers,
                 tablefmt="fancy_grid"
             ))
 
@@ -128,8 +138,8 @@ def main():
             with open(args["--users-json"]) as fp:
                 users = [SlackUser(**it) for it in json.load(fp)]
 
-            n_prev = 3
-            n_next = 1
+            n_prev = int(args["--n-prev"])
+            n_next = int(args["--n-next"])
 
             today = datetime.datetime.today()
             anchor_dt = today.replace(day=1, hour=0, minute=0, second=0, microsecond=0)  # First day of the month

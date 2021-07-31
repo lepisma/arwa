@@ -11,16 +11,40 @@ Environment variables:
 + =SLACK_USER_TOKEN= for regular use cases.
 
 ** Usage
+*** Slack
 #+begin_src shell
-# For inviting everyone in a channel
-arwa slack bulk-invite <channel-name>
-
-# For exporting all messages from a conversation in a jsonlines file
-arwa slack export conversations --conversation-id=<conversation-id> --output-jsonl=<output-jsonl>
-
-# For dumping workspace user information
-arwa slack export users --output-json=output-json
+  # For inviting everyone in a channel
+  arwa slack bulk-invite <channel-name>
+  
+  # For exporting all messages from a conversation in a jsonlines file
+  arwa slack export conversations --conversation-id=<conversation-id> --output-jsonl=<output-jsonl>
+  
+  # For dumping workspace user information
+  arwa slack export users --output-json=output-json
 #+end_src
 
 These commands require various scopes that can be figured out once the API
 throws error. Though I should document them under each command's help.
+
+*** Calendar
+#+begin_src shell :exports both :results output
+  # To show break down of calendar hours
+  poetry run arwa calendar report abhinav@vernacular.ai
+#+end_src
+
+#+RESULTS:
+#+begin_example
+╒════════════╤════════════╤═══════════════╤══════════════════╤════════════╤═════════╤══════════╕
+│ Start      │ End        │   Total Hours │   Personal Block │   External │     1:1 │     Rest │
+╞════════════╪════════════╪═══════════════╪══════════════════╪════════════╪═════════╪══════════╡
+│ 2021-07-18 │ 2021-07-25 │       47.3333 │         10.5     │   0.916667 │ 16.9167 │ 19       │
+├────────────┼────────────┼───────────────┼──────────────────┼────────────┼─────────┼──────────┤
+│ 2021-07-25 │ 2021-08-01 │       28      │          2.83333 │   1.25     │ 13.9167 │ 10       │
+├────────────┼────────────┼───────────────┼──────────────────┼────────────┼─────────┼──────────┤
+│ 2021-08-01 │ 2021-08-08 │       28.6667 │          7       │   1        │ 10.9167 │  9.75    │
+├────────────┼────────────┼───────────────┼──────────────────┼────────────┼─────────┼──────────┤
+│ 2021-08-08 │ 2021-08-15 │       19.3333 │          1       │   1        │  9      │  8.33333 │
+├────────────┼────────────┼───────────────┼──────────────────┼────────────┼─────────┼──────────┤
+│ 2021-08-15 │ 2021-08-22 │       20.25   │          1       │   0        │ 10.9167 │  8.33333 │
+╘════════════╧════════════╧═══════════════╧══════════════════╧════════════╧═════════╧══════════╛
+#+end_example

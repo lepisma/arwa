@@ -6,7 +6,7 @@ import calendar
 import datetime
 import operator as op
 from functools import reduce
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 import portion as P
 from gcsa.google_calendar import GoogleCalendar
@@ -85,6 +85,11 @@ def is_event_personal(ev: CalendarEvent) -> bool:
     return len(ev.attendees) == 1
 
 
+def is_day_long_event(ev: CalendarEvent) -> bool:
+    # HACK: Approximation
+    return ((ev.end_time - ev.start_time).total_seconds() / 3600) >= 24
+
+
 def is_event_external(ev: CalendarEvent) -> bool:
     return len({email.split("@")[1] for email in ev.attendees}) > 1
 
@@ -106,6 +111,25 @@ def calculate_time_spent(events: List[CalendarEvent]) -> float:
             total += ((ev.end_time - ev.start_time).total_seconds() / 60)
 
     return total
+
+
+def report_events_summary(events: List[CalendarEvent]) -> Dict[str, float]:
+    # Don't count day long events
+    events = [ev for ev in events if not is_day_long_event(ev)]
+    total_hours = calculate_time_spent(events) / 60
+
+    external_events, internal_events = py_.partition(events, is_event_external)
+    external_hours = calculate_time_spent(external_events) / 60
+    personal_events, rest_events = py_.partition(internal_events, is_event_personal)
+    personal_hours = calculate_time_spent(personal_events) / 60
+
+    return {
+        "total": total_hours,
+        "external": external_hours,
+        "personal": personal_hours,
+        "1:1": calculate_time_spent([ev for ev in rest_events if is_event_one_on_one(ev)]) / 60,
+        "rest": calculate_time_spent([ev for ev in rest_events if not is_event_one_on_one(ev)]) / 60
+    }
 
 
 def is_overlapping(event_a: CalendarEvent, event_b: CalendarEvent) -> bool:
