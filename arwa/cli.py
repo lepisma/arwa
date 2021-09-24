@@ -6,6 +6,7 @@ Usage:
   arwa slack export conversations --conversation-id=<conversation-id> --output-jsonl=<output-jsonl>
   arwa slack export users --output-json=output-json
   arwa slack post --text-file=<text-file> --channel-name=<channel-name>
+  arwa slack post --file=<file-to-upload> --channel-name=<channel-name>
   arwa slack post bulk --template-file=<template-file> --bulk-post-config=<bulk-post-config>
   arwa calendar report <email-id> [--n-next=<n-next] [--n-prev=<n-prev>]
   arwa calendar export --users-json=<users-json> --output-pickle=<output-pickle> [--n-next=<n-next] [--n-prev=<n-prev>]
@@ -90,6 +91,13 @@ def main():
                             "text": text
                         }
                     }]
+                )
+
+            if args["--file"]:
+                response = client.files_upload(
+                    channels=args["--channel-name"],
+                    file=args["--file"],
+                    initial_comment=""
                 )
 
             if args["bulk"]:
