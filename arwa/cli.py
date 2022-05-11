@@ -10,11 +10,16 @@ Usage:
   arwa slack post bulk --template-file=<template-file> --bulk-post-config=<bulk-post-config>
   arwa calendar report <email-id> [--n-next=<n-next] [--n-prev=<n-prev>]
   arwa calendar export --users-json=<users-json> --output-pickle=<output-pickle> [--n-next=<n-next] [--n-prev=<n-prev>]
+  arwa calendar focus-wrap
 
 Options:
   --bulk-post-config=<bulk-post-config>       Yaml config for bulk text.
   --n-next=<n-next>                           Number of future weeks to look in [default: 2].
   --n-prev=<n-prev>                           Number of past weeks to look in [default: 2].
+
+Arguments:
+  focus-wrap                                  Add focus time blocks before and after every
+                                              meeting starting now.
 """
 
 import dataclasses
@@ -170,3 +175,6 @@ def main():
 
             with open(args["--output-pickle"], "wb") as fp:
                 pickle.dump(output, fp)
+
+        elif args["focus-wrap"]:
+            raise NotImplementedError()

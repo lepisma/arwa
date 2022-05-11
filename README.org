@@ -53,3 +53,8 @@ throws error. Though I should document them under each command's help.
 │ 2021-08-15 │ 2021-08-22 │       20.25   │          1       │   0        │ 10.9167 │  8.33333 │
 ╘════════════╧════════════╧═══════════════╧══════════════════╧════════════╧═════════╧══════════╛
 #+end_example
+
+#+begin_src shell :exports both :results output
+  # For adding pre and post focus time block before meetings
+  arwa calendar focus-wrap
+#+end_src
