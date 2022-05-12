@@ -8,9 +8,9 @@ Usage:
   arwa slack post --text-file=<text-file> --channel-name=<channel-name>
   arwa slack post --file=<file-to-upload> --channel-name=<channel-name>
   arwa slack post bulk --template-file=<template-file> --bulk-post-config=<bulk-post-config>
-  arwa calendar report <email-id> [--n-next=<n-next] [--n-prev=<n-prev>]
-  arwa calendar export --users-json=<users-json> --output-pickle=<output-pickle> [--n-next=<n-next] [--n-prev=<n-prev>]
-  arwa calendar focus-wrap
+  arwa calendar report <email-id> [--n-next=<n-next>] [--n-prev=<n-prev>]
+  arwa calendar export --users-json=<users-json> --output-pickle=<output-pickle> [--n-next=<n-next>] [--n-prev=<n-prev>]
+  arwa calendar focus-wrap [--n-next=<n-next>]
 
 Options:
   --bulk-post-config=<bulk-post-config>       Yaml config for bulk text.
