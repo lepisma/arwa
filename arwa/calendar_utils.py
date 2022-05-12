@@ -82,7 +82,7 @@ def parse_google_calendar(email_id: str, start_time: datetime.datetime, end_time
     return events
 
 
-def create_event(cal: GoogleCalendar, ev: CalendarEvent):
+def register_event(cal: GoogleCalendar, ev: CalendarEvent):
     """
     Push the event on Google Calendar.
 
