@@ -98,6 +98,10 @@ def is_event_one_on_one(ev: CalendarEvent) -> bool:
     return len(ev.attendees) == 2
 
 
+def is_event_focus_time(ev: CalendarEvent) -> bool:
+    return ev.other["eventType"] == "focusTime"
+
+
 def calculate_time_spent(events: List[CalendarEvent]) -> float:
     """
     Return total time spent (minutes) in given events taking only accepted
