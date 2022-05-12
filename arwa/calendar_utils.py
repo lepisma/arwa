@@ -90,7 +90,7 @@ def create_event(cal: GoogleCalendar, ev: CalendarEvent):
     moment.
     """
 
-    gev = gcsa.event.Event(ev.name, start=ev.start, end=ev.end, attendees=ev.attendees)
+    gev = gcsa.event.Event(ev.name, start=ev.start_time, end=ev.end_time, attendees=ev.attendees)
     return cal.add_event(gev)
 
 
