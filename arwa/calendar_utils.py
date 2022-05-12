@@ -6,7 +6,7 @@ import calendar
 import datetime
 import operator as op
 from functools import reduce
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 import portion as P
 from gcsa.google_calendar import GoogleCalendar
@@ -45,10 +45,15 @@ def get_last_day_of_month(dt=None) -> datetime.datetime:
 
 def parse_google_calendar(email_id: str, start_time: datetime.datetime, end_time: datetime.datetime) -> List[CalendarEvent]:
     """
-    Parse google calendar and return events. End time is not inclusive.
+    Parse google calendar and return events. End time is not inclusive. Use
+    empty string "" to refer to user's default calendar.
     """
 
-    cal = GoogleCalendar(email_id)
+    # HACK: Didn't want to change position of the arguments
+    if email_id:
+        cal = GoogleCalendar(email_id)
+    else:
+        cal = GoogleCalendar()
 
     events = []
     for ev in cal[start_time:end_time]:
@@ -115,6 +120,14 @@ def is_event_focus_time(ev: CalendarEvent) -> bool:
     return ev.other["eventType"] == "focusTime"
 
 
+def event_duration(ev: CalendarEvent) -> float:
+    """
+    Return event duration in (floating) minutes.
+    """
+
+    return ((ev.end_time - ev.start_time).total_seconds() / 60)
+
+
 def calculate_time_spent(events: List[CalendarEvent]) -> float:
     """
     Return total time spent (minutes) in given events taking only accepted
@@ -125,7 +138,7 @@ def calculate_time_spent(events: List[CalendarEvent]) -> float:
 
     for ev in events:
         if ev.response_status and ev.response_status == "accepted":
-            total += ((ev.end_time - ev.start_time).total_seconds() / 60)
+            total += event_duration(ev)
 
     return total
 
@@ -167,21 +180,25 @@ def get_focus_wrap(ev: CalendarEvent) -> Tuple[CalendarEvent, CalendarEvent]:
     the pre-time is 30m, else 15m.
     """
 
-    if calculate_time_spent([ev]) > 30:
+    if event_duration(ev) > 30:
         pre_duration = 30
     else:
         pre_duration = 15
 
+    post_duration = 15
+
     pre_ev = CalendarEvent(
-        "Automatic Preparation Block",
-        start=ev.start_time,
-        end=ev.start_time - datetime.timedelta(minutes=pre_duration)
+        "ARWA: Preparation Block",
+        start_time=ev.start_time - datetime.timedelta(minutes=pre_duration),
+        end_time=ev.start_time,
+        attendees=[]
     )
 
     post_ev = CalendarEvent(
-        "Automatic Closure Block",
-        start=ev.end_time,
-        end=ev.end_time + datetime.timedelta(minutes=15)
+        "ARWA: Closure Block",
+        start_time=ev.end_time,
+        end_time=ev.end_time + datetime.timedelta(minutes=post_duration),
+        attendees=[]
     )
 
     return [pre_ev, post_ev]

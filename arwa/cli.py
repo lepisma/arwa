@@ -36,10 +36,13 @@ from docopt import docopt
 from pydash import py_
 from tabulate import tabulate
 from tqdm import tqdm
+from gcsa.google_calendar import GoogleCalendar
 
 from arwa import __version__
 from arwa.calendar_utils import (get_last_day_of_month, get_last_sunday,
-                                 parse_google_calendar, report_events_summary)
+                                 parse_google_calendar, report_events_summary,
+                                 is_event_personal, register_event,
+                                 get_focus_wrap, is_day_long_event)
 from arwa.slack_utils import (channel_name_to_id, get_message_batches,
                               list_users)
 from arwa.types import SlackUser
@@ -177,4 +180,19 @@ def main():
                 pickle.dump(output, fp)
 
         elif args["focus-wrap"]:
-            raise NotImplementedError()
+            n_next = int(args["--n-next"])
+
+            start_dt = datetime.datetime.now()
+            delta = datetime.timedelta(days=7)
+
+            evs = parse_google_calendar("", start_dt, start_dt + (delta * n_next))
+            cal = GoogleCalendar()
+
+            for ev in tqdm(evs):
+                if is_event_personal(ev) or is_day_long_event(ev):
+                    # Personal events cover focus time too
+                    continue
+
+                pre_ev, post_ev = get_focus_wrap(ev)
+                register_event(cal, pre_ev)
+                register_event(cal, post_ev)
