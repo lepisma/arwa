@@ -1,5 +1,5 @@
 """
-Utilities for interacting with online calendars.
+Utilities for interacting with online calendars, mostly Google's.
 """
 
 import calendar
@@ -10,6 +10,7 @@ from typing import Dict, List, Optional
 
 import portion as P
 from gcsa.google_calendar import GoogleCalendar
+import gcsa.event
 from pydash import py_
 
 from arwa.types import CalendarEvent
@@ -79,6 +80,18 @@ def parse_google_calendar(email_id: str, start_time: datetime.datetime, end_time
         ))
 
     return events
+
+
+def create_event(cal: GoogleCalendar, ev: CalendarEvent):
+    """
+    Push the event on Google Calendar.
+
+    APIs don't allow creating OOO and FocusTime event type on calendar at the
+    moment.
+    """
+
+    gev = gcsa.event.Event(ev.name, start=ev.start, end=ev.end, attendees=ev.attendees)
+    return cal.add_event(gev)
 
 
 def is_event_personal(ev: CalendarEvent) -> bool:
