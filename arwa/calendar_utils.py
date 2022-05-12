@@ -160,6 +160,33 @@ def is_overlapping(event_a: CalendarEvent, event_b: CalendarEvent) -> bool:
     return not (interval_a & interval_b).empty
 
 
+def get_focus_wrap(ev: CalendarEvent) -> Tuple[CalendarEvent, CalendarEvent]:
+    """
+    Take a calendar event and return focus time blocks around it. The post event
+    time is always of 15m duration. If the event is of more than 30m duration,
+    the pre-time is 30m, else 15m.
+    """
+
+    if calculate_time_spent([ev]) > 30:
+        pre_duration = 30
+    else:
+        pre_duration = 15
+
+    pre_ev = CalendarEvent(
+        "Automatic Preparation Block",
+        start=ev.start_time,
+        end=ev.start_time - datetime.timedelta(minutes=pre_duration)
+    )
+
+    post_ev = CalendarEvent(
+        "Automatic Closure Block",
+        start=ev.end_time,
+        end=ev.end_time + datetime.timedelta(minutes=15)
+    )
+
+    return [pre_ev, post_ev]
+
+
 def find_interstices(events: List[CalendarEvent]) -> List[CalendarEvent]:
     """
     Return gaps where there are no events.
