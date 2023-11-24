@@ -5,7 +5,8 @@
   "description": "Point of use contextual help",
   "permissions": [
     "activeTab",
-    "tabs"
+    "tabs",
+    "theme"
   ],
   "sidebar_action": {
     "default_title": "ARWA Sidekick",

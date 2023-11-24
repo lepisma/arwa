@@ -53,16 +53,17 @@ function updateURL() {
         matchedLists.forEach(listKey => {
           let items = checklists[listKey];
           if (items) {
-            let listHTML = `<h2>${listKey.replace('.', ' ')}</h2><ul>`;
-            items.forEach(item => {
-              listHTML += `<li><input type="checkbox">${item}</li>`;
+            let listHTML = `<h2>${listKey}</h2><ul>`;
+            items.forEach((item, index) => {
+              const checkboxId = `checkbox-${listKey.replace('.', '-')}-${index}`;
+              listHTML += `<li><input type="checkbox" id="${checkboxId}"><label for="${checkboxId}">${item}</label></li>`;
             });
             listHTML += '</ul>';
             listsContainer.innerHTML += listHTML;
           }
         });
       } else {
-        listsContainer.innerHTML = '<h3>No checklist items for this site.</h3>';
+        listsContainer.innerHTML = '<h3>No checklist items for this site</h3>';
       }
     }
   });

@@ -1,12 +1,31 @@
 body {
   padding: 20px;
+  background-color: #2E3440;
+  color: #D8DEE9;
 }
 
 h2 {
-  color: #333;
+  color: #81A1C1;
+  margin-bottom: 10px;
 }
 
 ul {
   list-style-type: none;
   padding: 0;
+  margin-bottom: 50px;
+}
+
+li {
+  display: flex;
+  align-items: start;
+  margin-bottom: 5px;
+}
+
+li label {
+  flex-grow: 1;
+  margin-left: 8px;
+}
+
+input[type="checkbox"] {
+  flex-shrink: 0;
 }
