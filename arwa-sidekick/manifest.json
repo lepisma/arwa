@@ -1,0 +1,14 @@
+{
+  "manifest_version": 2,
+  "name": "ARWA Sidekick",
+  "version": "0.1.0",
+  "description": "Point of use contextual help",
+  "permissions": [
+    "activeTab",
+    "tabs"
+  ],
+  "sidebar_action": {
+    "default_title": "ARWA Sidekick",
+    "default_panel": "sidebar.html"
+  }
+}
