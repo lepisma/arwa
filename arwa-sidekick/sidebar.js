@@ -43,10 +43,10 @@ const urlPatterns = {
   "meet.google.com": [
     "1:1"
   ],
-  "slack.com": [
+  "app.slack.com": [
     "communication"
   ],
-  "shortwave.com": [
+  "app.shortwave.com": [
     "communication"
   ],
   "mail.google.com": [
