@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "ARWA Sidekick",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Point of use contextual help",
   "permissions": [
     "activeTab",

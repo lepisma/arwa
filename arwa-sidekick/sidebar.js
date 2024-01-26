@@ -26,6 +26,11 @@ const checklists = {
     "Clarify current responsibilities",
     "Feedback from striving for excellence angle",
     "Anything I can do for them?"
+  ],
+  "communication": [
+    "Is it true",
+    "Is it necessary",
+    "Is it polite"
   ]
 }
 
@@ -37,6 +42,15 @@ const urlPatterns = {
   ],
   "meet.google.com": [
     "1:1"
+  ],
+  "slack.com": [
+    "communication"
+  ],
+  "shortwave.com": [
+    "communication"
+  ],
+  "mail.google.com": [
+    "communication"
   ]
 }
 
